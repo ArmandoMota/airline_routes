@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 import data from './data';
+import Table from './components/Table';
 
-const getName = (id, type) => {
-  if (type === 'airline') {
-    return data.getAirlineById(id).name;
-  } else if (type === 'airport') {
-    return data.getAirportByCode(id).name;
+const formatValue = (property, value) => {
+  if (property === 'airline') {
+    return data.getAirlineById(value).name;
+  } else if (['src', 'dest'].includes(property)) {
+    return data.getAirportByCode(value).name;
   }
 }
+
+const columns = [
+  {name: 'Airline', property: 'airline'},
+  {name: 'Source Airport', property: 'src'},
+  {name: 'Destination Airport', property: 'dest'},
+];
 
 const App = () => (
   <div className="app">
@@ -19,24 +26,7 @@ const App = () => (
     <p>
       Welcome to the app!
     </p>
-    <table>
-      <thead>
-        <tr>
-          <th>Airline</th>
-          <th>Source</th>
-          <th>Destination</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.routes.map(route => (
-          <tr key={`${route.airline}${route.src}${route.dest}`}>
-            <td>{getName(route.airline, 'airline')}</td>
-            <td>{getName(route.src, 'airport')}</td>
-            <td>{getName(route.dest, 'airport')}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table className="routes-table" columns={columns} rows="" format={formatValue} />
   </section>
 </div>
 )
