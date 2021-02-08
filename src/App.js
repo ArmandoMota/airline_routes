@@ -26,7 +26,8 @@ const App = () => (
     <p>
       Welcome to the app!
     </p>
-    <Table className="routes-table" columns={columns} rows="" format={formatValue} />
+    <Table className="routes-table" columns={columns} rows={data.routes}
+      perPage={25} format={formatValue} />
   </section>
 </div>
 )

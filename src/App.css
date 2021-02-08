@@ -50,6 +50,18 @@ select {
   margin: 0 .5em;
 }
 
+.pagination button {
+  margin: 0 .5em;
+}
+
+.disabled {
+  border: 1px solid #d0d0d0;
+  border-radius: 2px;
+  color: #d0d0d0;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
 svg circle:hover {
   cursor: crosshair;
 }
