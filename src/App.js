@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
-// const data = require('./data.js');
 import data from './data';
+
+const getName = (id, type) => {
+  if (type === 'airline') {
+    return data.getAirlineById(id).name;
+  } else if (type === 'airport') {
+    return data.getAirportByCode(id).name;
+  }
+}
 
 const App = () => (
   <div className="app">
@@ -22,10 +29,10 @@ const App = () => (
       </thead>
       <tbody>
         {data.routes.map(route => (
-          <tr>
-            <td>{route.airline}</td>
-            <td>{route.src}</td>
-            <td>{route.dest}</td>
+          <tr key={`${route.airline}${route.src}${route.dest}`}>
+            <td>{getName(route.airline, 'airline')}</td>
+            <td>{getName(route.src, 'airport')}</td>
+            <td>{getName(route.dest, 'airport')}</td>
           </tr>
         ))}
       </tbody>

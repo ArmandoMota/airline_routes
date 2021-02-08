@@ -851,6 +851,10 @@ const routes = [
   {"airline":4951,"src":"NBO","dest":"IST"},
 ];
 
+const getAirlineById = (id) => {
+  return airlines.find(airline => airline.id === id);
+};
+
 const airlines = [
   {"id":24,"name":"American Airlines"},
   {"id":130,"name":"Aeroflot Russian Airlines"},
@@ -870,6 +874,10 @@ const airlines = [
   {"id":4867,"name":"TAM Brazilian Airlines"},
   {"id":4951,"name":"Turkish Airlines"},
 ];
+
+const getAirportByCode = (code) => {
+  return airports.find(airport => airport.code === code);
+};
 
 const airports = [
   {"code":"YEG","name":"Edmonton International Airport","lat":53.309700012200004,"long":-113.580001831},
@@ -1395,4 +1403,10 @@ const airports = [
 
 ];
 
-export default {routes, airlines, airports};
+export default {
+  routes,
+  airlines,
+  airports,
+  getAirlineById,
+  getAirportByCode,
+};
