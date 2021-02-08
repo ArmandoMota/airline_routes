@@ -2,6 +2,7 @@ import React, { Component, useState } from 'react';
 import './App.css';
 import data from './data';
 import Table from './components/Table';
+import Select from './components/Select';
 
 const formatValue = (property, value) => {
   if (property === 'airline') {
@@ -18,14 +19,19 @@ const columns = [
 ];
 
 const App = () => {
-  const [routes, setRoutes] = useState(data.routes);
+  const [filteredRoutes, setFilteredRoutes] = useState(data.routes);
+  const [filteredAirlines, setFilteredAirlines] = useState(data.airlines);
 
-  const handleChange = (e) => {
-    const newRoutes = data.routes.filter(route => {
-      return route.airline === Number(e.target.value);
-    });
+  const selectAirline = (e) => {
+    if (e.target.value === "0") {
+      setFilteredRoutes(data.routes);
+    } else {
+      const newRoutes = data.routes.filter(route => {
+        return route.airline === Number(e.target.value);
+      });
 
-    setRoutes(newRoutes);
+      setFilteredRoutes(newRoutes);
+    }
   };
 
   return (
@@ -35,12 +41,9 @@ const App = () => {
     </header>
     <section>
       <label>Show routes on</label>
-      <select onChange={handleChange}>
-        {data.airlines.map(airline => (
-          <option key={airline.id} value={airline.id}>{airline.name}</option>
-        ))}
-      </select>
-      <Table className="routes-table" columns={columns} rows={routes}
+      <Select options={filteredAirlines} valueKey="id" titleKey="name"
+        allTitle="All Airlines" value="0" onSelect={selectAirline} />
+      <Table className="routes-table" columns={columns} rows={filteredRoutes}
         perPage={25} format={formatValue} />
     </section>
   </div>
