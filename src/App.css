@@ -16,6 +16,7 @@ body {
 
 section {
   text-align: center;
+  margin-bottom: 15px;
 }
 
 table.routes-table {

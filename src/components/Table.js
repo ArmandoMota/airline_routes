@@ -59,9 +59,12 @@ const Table = ({ className, columns, rows, perPage, format }) => {
       </table>
       <div className="pagination">
         <p>
-          Showing {`${indices.start + 1}-${Math.min(indices.stop, rows.length)}`} routes of {totalRoutes} total routes
+          Showing {`${indices.start + 1}-${Math.min(indices.stop,
+          rows.length)}`} of {totalRoutes} routes.
         </p>
-        <button className={previousClass} onClick={previousHandler}>Previous Page</button>
+        <button className={previousClass} onClick={previousHandler}>
+          Previous Page
+        </button>
         <button className={nextClass} onClick={nextHandler}>Next Page</button>
       </div>
     </>

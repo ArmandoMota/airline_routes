@@ -3,6 +3,7 @@ import './App.css';
 import data from './data';
 import Table from './components/Table';
 import Select from './components/Select';
+import Map from './components/Map';
 
 const formatValue = (property, value) => {
   if (property === 'airline') {
@@ -136,6 +137,7 @@ const App = () => {
       <h1 className="title">Airline Routes</h1>
     </header>
     <section>
+      <Map routes={filtered.routes} airports={data.airports}/>
       <form className="select-container">
         <label>Show routes on</label>
         <Select options={data.airlines} valueKey="id" titleKey="name"
