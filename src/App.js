@@ -33,20 +33,7 @@ const App = () => {
       airlines: data.airlines,
       airports: data.airports,
     });
-    // setAirlineSelected(false);
-    // setAirportSelected(false);
   }, []);
-
-  // select single airline, all-airlines all-airports (filter airlines to selected, filter airports to valid)
-  // select single airline, filtered-airlines selected-airport (filter airlines to selected, don't touch filtered airports)
-  // select all airlines, selected-airline all-airports (filter airlines to all, filter airports to all)
-  // select all airlines, selected-airline selected-airport (filter airlines to valid, don't touch filtered airports)
-
-  // select single airport, all-airlines all-airports (filter airports to selected, filter airlines to valid)
-  // select single airport, selected-airline all-airports (filter airports to selected, don't touch filtered airlines)
-  // select all airports, all-airlines selected-airport (filter airport to all, filter airlines to all)
-  // select all airports, select-airline selected-airport (filter airports to valid, don't touch filtered airlines)
-
 
   const selectAirline = (e) => {
     setAirlineSelected(e.target.value !== "0");
@@ -76,7 +63,7 @@ const App = () => {
       filtered.airlines :
       filterAirlines(null, selectedAirports);
     const selectedRoutes = filterRoutes(selectedAirlines, selectedAirports);
-    
+
     setFiltered({
       routes: selectedRoutes,
       airlines: selectedAirlines,
@@ -84,8 +71,18 @@ const App = () => {
     });
   };
 
+  const showAllRoutes = () => {
+    setAirlineSelected(false);
+    setAirportSelected(false);
+    setFiltered({
+      routes: data.routes,
+      airlines: data.airlines,
+      airports: data.airports,
+    });
+  };
+
   const filterAirlines = (selectedAirline, selectedAirports) => {
-    if (selectedAirline === null || selectedAirline === "0") {
+    if (selectedAirline === null || selectedAirline === '0') {
       return data.airlines.filter(airline => {
         return data.routes.some(route => {
           return route.airline === airline.id &&
@@ -122,9 +119,7 @@ const App = () => {
   };
 
   const usesFilteredAirline = (route, airlines) => {
-    return airlines.some(airline => {
-      return airline.id === route.airline;
-    });
+    return airlines.some(airline => airline.id === route.airline);
   };
 
   const usesFilteredAirport = (route, airports) => {
@@ -133,19 +128,25 @@ const App = () => {
     });    
   };
 
+  
+
   return (
     <div className="app">
     <header className="header">
       <h1 className="title">Airline Routes</h1>
     </header>
     <section>
-      <label>Show routes on</label>
-      <Select options={data.airlines} valueKey="id" titleKey="name"
-        allTitle="All Airlines" value="0" onSelect={selectAirline}
-        selectable={filtered.airlines} />
-      <Select options={data.airports} valueKey="code" titleKey="name"
-        allTitle="All Airports" value="all" onSelect={selectAirport}
-        selectable={filtered.airports} />
+      <form className="select-container">
+        <label>Show routes on</label>
+        <Select options={data.airlines} valueKey="id" titleKey="name"
+          allTitle="All Airlines" value="0" onSelect={selectAirline}
+          selectable={filtered.airlines} />
+        <label>flying in or out of</label>
+        <Select options={data.airports} valueKey="code" titleKey="name"
+          allTitle="All Airports" value="all" onSelect={selectAirport}
+          selectable={filtered.airports} />
+        <button type="reset" onClick={showAllRoutes}>Show All Routes</button>
+      </form>
       <Table className="routes-table" columns={columns} rows={filtered.routes}
         perPage={25} format={formatValue} />
     </section>
