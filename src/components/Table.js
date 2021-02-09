@@ -1,46 +1,42 @@
 import React, { useState, useEffect } from 'react';
 
 const Table = ({ className, columns, rows, perPage, format }) => {
-  const [startIndex, setStartIndex] = useState(0);
-  const [stopIndex, setStopIndex] = useState(perPage);
+  const [indices, setIndices] = useState({ start: 0, stop: perPage });
   const [previousClass, setPreviousClass] = useState('enabled');
   const [nextClass, setNextClass] = useState('enabled');
-
-  const routesToDisplay = rows.slice(startIndex, stopIndex);
+  const routesToDisplay = rows.slice(indices.start, indices.stop);
   const totalRoutes = rows.length;
 
   useEffect(() => {
-    if (startIndex <= 0) {
+    if (indices.start <= 0) {
       setPreviousClass('disabled');
     } else {
       setPreviousClass('enabled');
     }
 
-    if (stopIndex >= totalRoutes) {
-      setNextClass('disabled');
+    if (indices.stop >= totalRoutes) {
+      setNextClass('disabled'); 
     } else {
       setNextClass('enabled');
     }
-  }, [startIndex, stopIndex, totalRoutes]);
+  }, [indices, totalRoutes]);
 
   const previousHandler = (e) => {
-    const newStart = startIndex < perPage ? 0 : startIndex - perPage;
-    const newStop = stopIndex <= perPage ? perPage : stopIndex - perPage;
-    setStartIndex(newStart);
-    setStopIndex(newStop);
+    const start = indices.start < perPage ? 0 : indices.start - perPage;
+    const stop = indices.stop <= perPage ? perPage : indices.stop - perPage;
+    setIndices({ start, stop })
   };
 
   const nextHandler = (e) => {
-    const newStart = (startIndex + perPage) >= totalRoutes ?
-      startIndex :
-      startIndex + perPage;
+    const start = (indices.start + perPage) >= totalRoutes ?
+      indices.start :
+      indices.start + perPage;
       
-    const newStop = (stopIndex + perPage) > totalRoutes ?
+    const stop = (indices.stop + perPage) > totalRoutes ?
       totalRoutes :
-      stopIndex + perPage;
+      indices.stop + perPage;
 
-    setStartIndex(newStart);
-    setStopIndex(newStop);
+    setIndices({ start, stop });
   };
 
   return (
@@ -63,7 +59,7 @@ const Table = ({ className, columns, rows, perPage, format }) => {
       </table>
       <div className="pagination">
         <p>
-          Showing {`${startIndex + 1}-${stopIndex}`} routes of {totalRoutes} total routes
+          Showing {`${indices.start + 1}-${Math.min(indices.stop, rows.length)}`} routes of {totalRoutes} total routes
         </p>
         <button className={previousClass} onClick={previousHandler}>Previous Page</button>
         <button className={nextClass} onClick={nextHandler}>Next Page</button>
